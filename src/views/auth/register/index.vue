@@ -49,6 +49,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import Swal from 'sweetalert2'
+
 export default {
   name: 'register',
   data () {
@@ -69,13 +71,22 @@ export default {
       }
       this.register(payload)
         .then((res) => {
-          console.log('Your account has been created')
-          alert('Your account has been created')
+          Swal.fire({
+            icon: 'success',
+            title: 'Your account has been created',
+            showConfirmButton: false,
+            timer: 2000
+          })
           this.$router.push('/auth/login')
         })
         .catch((err) => {
           console.log(err.response.data.error.message)
-          alert('Your Password Wrong')
+          Swal.fire({
+            icon: 'error',
+            title: 'Register failed',
+            showConfirmButton: false,
+            timer: 2000
+          })
         })
     }
   }

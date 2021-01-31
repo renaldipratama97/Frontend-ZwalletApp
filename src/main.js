@@ -3,6 +3,9 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
+import Vuelidate from 'vuelidate' // IMPORT LIBRARY
+
+Vue.use(Vuelidate) // DEFINE AS GLOBAL
 
 Vue.config.productionTip = false
 

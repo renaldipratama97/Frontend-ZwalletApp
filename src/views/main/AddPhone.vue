@@ -40,6 +40,7 @@
 import Header from '../../components/module/Header'
 import Footer from '../../components/module/Footer'
 import { mapActions } from 'vuex'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'AddPhone',
@@ -52,7 +53,6 @@ export default {
       author: '2020 Zwallet. All right reserved',
       hp: '+62 5637 8882 9901',
       mail: 'contact@zwallet.com',
-      userId: null || localStorage.getItem('id'),
       number_phone: '',
       dataPhones: []
     }
@@ -62,23 +62,34 @@ export default {
     addPhones () {
       console.log('Ini perintah add phones')
       const payload = {
-        id_user: this.userId,
+        id_user: localStorage.getItem('id'),
         phone_number: this.number_phone
       }
       this.addPhone(payload)
         .then((res) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Phonenumber has been add',
+            showConfirmButton: false,
+            timer: 2000
+          })
           this.$router.push('/manage-phone')
         })
         .catch((err) => {
           console.log(err.response.data.error.message)
-          alert(err.response.data.error.message)
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed to add phonenumber',
+            showConfirmButton: false,
+            timer: 2000
+          })
         })
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 *{
   padding: 0px;
   margin: 0px;

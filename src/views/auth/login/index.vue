@@ -46,6 +46,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import Swal from 'sweetalert2'
+
 export default {
   name: 'Login',
   data () {
@@ -57,18 +59,28 @@ export default {
   methods: {
     ...mapActions(['login']),
     methodLogin () {
-      console.log('handle login di panggil')
       const payload = {
         email: this.email,
         password: this.password
       }
       this.login(payload)
         .then((res) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Login success',
+            showConfirmButton: false,
+            timer: 2000
+          })
           this.$router.push('/')
         })
         .catch((err) => {
           console.log(err.response.data.error.message)
-          alert('Your Password Wrong')
+          Swal.fire({
+            icon: 'error',
+            title: 'Login failed',
+            showConfirmButton: false,
+            timer: 2000
+          })
         })
     }
   }

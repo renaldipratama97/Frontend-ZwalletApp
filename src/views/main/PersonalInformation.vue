@@ -19,24 +19,27 @@
                     <div class="content-title">Personal Information</div>
                     <p>We got your personal information from the sign up proccess. If you want to make changes on your information, contact our support.</p>
                     <article>
-                        <span>First Name</span>
-                        <p>Renaldi</p>
+                        <span @click.prevent="editFirstname">First Name</span>
+                        <p v-if="userLogin.firstname">{{userLogin.firstname}}</p>
+                        <p v-else>-</p>
                     </article>
 
                     <article>
-                        <span>Last Name</span>
-                        <p>Pratama</p>
+                        <span  @click.prevent="editLastname">Last Name</span>
+                        <p v-if="userLogin.lastname">{{userLogin.lastname}}</p>
+                        <p v-else>-</p>
                     </article>
 
                     <article>
                         <span>Verified E-Mail</span>
-                        <p>renaldipratama51@gmail.com</p>
+                        <p>{{userLogin.email}}</p>
                     </article>
 
                     <router-link class="link" :to="{ path: `/manage-phone`}">
                     <article>
                         <span>Phone Number</span>
-                        <p>085264988916</p>
+                        <p v-if="userLogin.phonenumber">{{userLogin.phonenumber}}</p>
+                        <p v-else>+62</p>
                     </article>
                     </router-link>
                 </div>
@@ -48,9 +51,10 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { mapGetters, mapActions } from 'vuex'
 import Header from '../../components/module/Header'
 import Footer from '../../components/module/Footer'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'Home',
@@ -67,19 +71,50 @@ export default {
     }
   },
   mounted () {
-    this.getTransactions()
+    this.getUserLogin()
   },
   methods: {
-    getTransactions () {
-      axios.get('http://localhost:2000/transfers/').then(res => {
-        this.dataTransactions = res.data
-      }).catch((err) => {
-        console.log(err)
-      })
-    },
+    ...mapActions(['getUserLogin', 'updatefirstname', 'updatelastname']),
     navigationHandle () {
       this.router.push()
+    },
+    async editFirstname () {
+      const { value: firstname } = await Swal.fire({
+        title: 'Input your first name',
+        input: 'text',
+        inputLabel: 'Your first name',
+        inputPlaceholder: 'Enter your first name'
+      })
+
+      if (firstname) {
+        // Swal.fire(`Entered phone: ${phone}`)
+        const payload = {
+          id: localStorage.getItem('id'),
+          firstname: firstname
+        }
+        await this.updatefirstname(payload)
+      }
+    },
+    async editLastname () {
+      const { value: lastname } = await Swal.fire({
+        title: 'Input your last name',
+        input: 'text',
+        inputLabel: 'Your last name',
+        inputPlaceholder: 'Enter your last name'
+      })
+
+      if (lastname) {
+        // Swal.fire(`Entered phone: ${phone}`)
+        const payload = {
+          id: localStorage.getItem('id'),
+          lastname: lastname
+        }
+        await this.updatelastname(payload)
+      }
     }
+  },
+  computed: {
+    ...mapGetters(['userLogin'])
   }
 }
 </script>
@@ -212,6 +247,7 @@ nav ul li p .link:hover {
     font-size: 16px;
     font-weight: normal;
     margin-top: 2%;
+    cursor: pointer;
 }
 
 .content .content-box section .box article p {

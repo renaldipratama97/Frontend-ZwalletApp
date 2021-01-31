@@ -4,10 +4,12 @@
         <div class="box">
             <div class="title">Zwallet</div>
             <div class="profil">
-                <img @click.prevent="changePage()" src="../../assets/img/profil-foto.png">
+                <img @click.prevent="changePage()" v-if="userLogin.picture" :src="userLogin.picture">
+                <img @click.prevent="changePage()" v-else src="../../assets/default.jpg">
                 <div class="name">
-                    <span> {{getUser.username}} </span>
-                    <p>+62 8139 3877 7946</p>
+                    <span> {{userLogin.username}} </span>
+                    <p v-if="userLogin.phonenumber"> {{userLogin.phonenumber}} </p>
+                    <p v-else> +62 - </p>
                 </div>
                 <div class="notification">
                     <img src="../../assets/img/bell.png">
@@ -19,16 +21,21 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Header',
   methods: {
+    ...mapActions(['getUserLogin', 'getPhone']),
     changePage () {
       this.$router.push('/profil')
     }
   },
+  mounted () {
+    this.getUserLogin()
+    this.getPhone()
+  },
   computed: {
-    ...mapGetters(['getUser'])
+    ...mapGetters(['userLogin', 'phoneUser'])
   }
 }
 </script>
@@ -70,11 +77,12 @@ header .box .profil img {
     width: 52px;
     height: 52px;
     border-radius: 10px;
-    margin-right: 6%;;
+    margin-right: 6%;
+    cursor: pointer;
 }
 
 header .box .profil .name {
-    width: 180px;
+    width: 150px;
     color: #3A3D42;
     display: flex;
     flex-direction: column;
@@ -82,6 +90,7 @@ header .box .profil .name {
 }
 
 header .box .profil .name span {
+    width: max-content;
     font-size: 18px;
     font-weight: 700;
 }

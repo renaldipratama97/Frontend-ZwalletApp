@@ -21,14 +21,14 @@
                         <img src="../../assets/img/search.png">
                         <input type="text" @keyup.enter="searchReceiver" name="search" id="search"  placeholder="Search receiver here" autocomplete="off">
                     </div>
-                    <button>Sort A</button>
-                    <button>Sort B</button>
                     <div class="box-to-box" v-for="data in resultSearch" :key="data.id">
-                        <img src="../../assets/img/man.png">
+                        <img v-if="data.picture" :src="data.picture">
+                        <img v-else src="../../assets/default.jpg">
                         <router-link class="link" :to="{ path: `/input-transfer/${data.id}` }">
                         <div class="box-profile">
                             <span>{{data.username}}</span>
-                            <p> {{data.phonenumber}} </p>
+                            <p v-if="data.phonenumber"> {{data.phonenumber}} </p>
+                            <p v-else> - </p>
                         </div>
                         </router-link>
                     </div>
@@ -232,6 +232,7 @@ nav ul li p .link:hover {
     font-size: 18px;
     font-weight: bold;
     text-align: left;
+    width: max-content;
 }
 
 .content .content-box section .box .box-to-box .box-profile p {

@@ -18,15 +18,16 @@
                 <div class="balance-box">
                     <div class="money-balance">
                         <p>Balance</p>
-                        <span>Rp120.000</span>
-                        <p>+62 813-9387-7946</p>
+                        <span>Rp. {{userLogin.balance}}</span>
+                        <p v-if="userLogin.phonenumber">{{userLogin.phonenumber}}</p>
+                        <p v-else> +62 - </p>
                     </div>
                     <div class="transfer-topup">
-                        <div>
+                        <div @click="toTransfer">
                             <img src="../../assets/img/arrow-up-transfer.svg">
                             <p>Transfer</p>
                         </div>
-                        <div>
+                        <div @click="toTopup">
                             <img src="../../assets/img/plus-topup.svg">
                             <p>Top Up</p>
                         </div>
@@ -105,10 +106,9 @@
 </template>
 
 <script>
-import axios from 'axios'
 import Header from '../../components/module/Header'
 import Footer from '../../components/module/Footer'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Home',
@@ -120,19 +120,23 @@ export default {
     return {
       author: '2020 Zwallet. All right reserved',
       hp: '+62 5637 8882 9901',
-      mail: 'contact@zwallet.com',
-      firstName: ''
+      mail: 'contact@zwallet.com'
+    }
+  },
+  methods: {
+    ...mapActions(['getUserLogin']),
+    toTopup () {
+      this.$router.push({ name: 'Topup' })
+    },
+    toTransfer () {
+      this.$router.push({ name: 'Transfer' })
     }
   },
   mounted () {
-    axios.get('http://localhost:2000/users/14').then(res => {
-      this.firstName = res.data.result.firstname
-    }).catch((err) => {
-      console.log(err)
-    })
+    this.getUserLogin()
   },
   computed: {
-    ...mapGetters({ getUser: 'getUser' })
+    ...mapGetters(['userLogin'])
   }
 }
 </script>
@@ -148,8 +152,60 @@ export default {
 }
 
 .content .content-box{
+    display: flex;
     width: 75%;
     height: 100%;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    height: 100%;
+    background-color: #FFFFFF;
+    border-radius: 25px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    height: 95%;
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 5%;
+    color: rgba(58, 61, 66, 0.8);
+}
+
+nav ul li{
+    list-style: none;
+    display: flex;
+    margin-top: 15%;
+    align-items: center;
+}
+
+nav ul li:nth-child(5){
+    margin-top: auto;
+    margin-bottom: 30px;
+}
+
+nav ul li img{
+    width: 28px;
+    height: 28px;
+}
+
+nav ul li p{
+    margin-left: 8%;
+}
+
+nav ul li p .link {
+    text-decoration: none;
+    color: rgba(58, 61, 66, 0.8);
+}
+
+nav ul li p .link:hover {
+    color: rgb(99, 121, 244, 1);
 }
 
 .content .content-box section {
@@ -214,6 +270,7 @@ export default {
     width: 162px;
     height: 57px;
     margin-top: 3%;
+    cursor: pointer;
 }
 
 .content .content-box section .balance-box .transfer-topup div img {

@@ -17,13 +17,14 @@
             <section>
                 <div class="box">
                     <div class="profile">
-                        <img src="../../assets/img/profil-foto.png">
+                        <img v-if="userLogin.picture" :src="userLogin.picture">
+                        <img v-else src="../../assets/default.jpg">
                         <div class="edit">
-                            <img src="../../assets/img/edit-pen.svg">
                             <span>Edit</span>
                         </div>
-                        <span>Robert Chandler</span>
-                        <phone-number>+62 813-9387-7946</phone-number>
+                        <span v-if="userLogin.firstname && userLogin.lastname">{{userLogin.firstname}} {{userLogin.lastname}}</span>
+                        <span v-else> - </span>
+                        <phone-number>{{userLogin.phonenumber}}</phone-number>
                     </div>
 
                     <div class="menu">
@@ -42,6 +43,7 @@
 
 <script>
 // import axios from 'axios'
+import { mapGetters, mapActions } from 'vuex'
 import Header from '../../components/module/Header'
 import Footer from '../../components/module/Footer'
 import mixins from '../../mixins/index'
@@ -63,14 +65,19 @@ export default {
   },
   mounted () {
     this.getTransactions()
+    this.getUserLogin()
   },
   methods: {
+    ...mapActions(['getUserLogin']),
     navigationHandle () {
       this.$router.push({ name: 'PersonalInformation' })
     },
     logoutHandle () {
       this.$router.push({ name: 'Login' })
     }
+  },
+  computed: {
+    ...mapGetters(['userLogin'])
   }
 }
 </script>

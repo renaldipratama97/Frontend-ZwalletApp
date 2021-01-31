@@ -19,15 +19,30 @@
                     <div class="content-title">Manage Phone Number</div>
                     <p>You can only delete the phone number and then you must add another phone number.</p>
                     <div class="add">
-                      <p><router-link class="link" to="/add-phone">Add Phone Number</router-link></p>
+                      <p v-if="!userLogin.phonenumber"><router-link class="link" to="/add-phone">Add Phone Number</router-link></p>
+                      <p v-else></p>
                     </div>
-                    <div class="box-manage-phone" v-for="phone in dataPhones" :key = "phone.id">
+                    <div class="box-manage-phone">
                         <div class="box">
                             <div class="phone-number">
                                 <span>Primary</span>
-                                <p> {{phone.phone_number}} </p>
+                                <p v-if="userLogin.phonenumber"> {{userLogin.phonenumber}} </p>
+                                <p v-else> +62 - </p>
                             </div>
-                            <button v-on:click="deletePhone(phone.id)">
+                        </div>
+                    </div>
+
+                    <div class="add">
+                      <p v-if="!phoneUser.phone_number && userLogin.phonenumber"><router-link class="link" to="/add-phone">Add Phone Number</router-link></p>
+                      <p v-else></p>
+                    </div>
+                    <div class="box-manage-phone" v-for="data in phoneUser" :key="data.id">
+                        <div class="box">
+                            <div class="phone-number">
+                                <span>Secondary</span>
+                                <p> {{data.phone_number}} </p>
+                            </div>
+                            <button v-on:click="deletePhone(data.id)">
                             <img src="../../assets/img/trash.svg">
                             </button>
                         </div>
@@ -41,10 +56,10 @@
 </template>
 
 <script>
-import axios from 'axios'
 import Header from '../../components/module/Header'
 import Footer from '../../components/module/Footer'
-import { mapState } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'Manage-Phone',
@@ -62,24 +77,38 @@ export default {
     }
   },
   mounted () {
-    this.load()
+    this.getUserLogin()
+    this.getPhone()
   },
   methods: {
-    ...mapState(['idUser']),
-    load () {
-      axios.get(`http://localhost:2000/phones/${this.userId}`).then(res => {
-        this.dataPhones = res.data.result
-      }).catch((err) => {
-        console.log(err)
-      })
-    },
+    ...mapActions(['getUserLogin', 'getPhone', 'deletePhoneUser']),
     deletePhone (id) {
-      axios.delete(`http://localhost:2000/phones/${id}`).then(res => {
-        this.load()
-      }).catch((err) => {
-        console.log(err)
-      })
+      const payload = {
+        id
+      }
+      this.deletePhoneUser(payload)
+        .then((res) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted success',
+            showConfirmButton: false,
+            timer: 2000
+          })
+          this.$router.push('/manage-phone')
+        })
+        .catch((err) => {
+          console.log(err.response.data.error.message)
+          Swal.fire({
+            icon: 'error',
+            title: 'Deleted failed',
+            showConfirmButton: false,
+            timer: 2000
+          })
+        })
     }
+  },
+  computed: {
+    ...mapGetters(['phoneUser', 'userLogin'])
   }
 }
 </script>
@@ -260,6 +289,7 @@ nav ul li p .link:hover {
     margin-left: auto;
     border: none;
     background: transparent;
+    cursor: pointer;
 }
 
 .content .content-box section .box .box-manage-phone .box button {
