@@ -16,39 +16,17 @@
             </nav>
             <section>
                 <div class="box">
-                    <div class="content-title">Manage Phone Number</div>
-                    <p>You can only delete the phone number and then you must add another phone number.</p>
-                    <div class="add">
-                      <p v-if="!userLogin.phonenumber"><router-link class="link" :to="{ name: 'AddPhonePrimary', params: { idUser: userLogin.id }}">Add Phone Number</router-link></p>
-                      <p v-else></p>
-                    </div>
-                    <div class="box-manage-phone">
-                        <div class="box">
-                            <div class="phone-number">
-                                <span>Primary</span>
-                                <p v-if="userLogin.phonenumber"> {{userLogin.phonenumber}} </p>
-                                <p v-else> - </p>
-                            </div>
-                            <button v-on:click="editPhone(userLogin.id)">
-                            <img src="../../assets/img/edit-pen.svg">
-                            </button>
-                        </div>
-                    </div>
+                    <div class="content-title">Add Phone Number</div>
+                    <p>Add at least one phone number for the transfer ID so you can start transfering your money to another user.</p>
 
-                    <div class="add">
-                      <p v-if="!phoneUser.phone_number && userLogin.phonenumber"><router-link class="link" to="/add-phone">Add Phone Number</router-link></p>
-                      <p v-else></p>
-                    </div>
-                    <div class="box-manage-phone" v-for="data in phoneUser" :key="data.id">
-                        <div class="box">
-                            <div class="phone-number">
-                                <span>Secondary</span>
-                                <p> {{data.phone_number}} </p>
-                            </div>
-                            <button v-on:click="deletePhone(data.id)">
-                            <img src="../../assets/img/trash.svg">
-                            </button>
+                    <div class="box-password">
+                        <div class="input-password">
+                            <img src="../../assets/img/phone-logo.svg">
+                            <div class="code-phone"></div>
+                            <input type="text" v-model="primary_phone" placeholder="Enter your phone number">
                         </div>
+
+                        <button @click.prevent="updatePhone">Add Phone Number</button>
                     </div>
                 </div>
             </section>
@@ -61,11 +39,11 @@
 <script>
 import Header from '../../components/module/Header'
 import Footer from '../../components/module/Footer'
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import Swal from 'sweetalert2'
 
 export default {
-  name: 'Manage-Phone',
+  name: 'AddPhonePrimary',
   components: {
     Header,
     Footer
@@ -75,28 +53,21 @@ export default {
       author: '2020 Zwallet. All right reserved',
       hp: '+62 5637 8882 9901',
       mail: 'contact@zwallet.com',
-      userId: null || localStorage.getItem('id'),
-      dataPhones: []
+      primary_phone: ''
     }
   },
-  mounted () {
-    this.getUserLogin()
-    this.getPhone()
-  },
   methods: {
-    ...mapActions(['getUserLogin', 'getPhone', 'deletePhoneUser']),
-    editPhone (id) {
-      this.$router.push(`/add-phone-primary/${id}`)
-    },
-    deletePhone (id) {
+    ...mapActions(['addPhonePrimary']),
+    updatePhone () {
       const payload = {
-        id
+        id: localStorage.getItem('id'),
+        phonenumber: this.primary_phone
       }
-      this.deletePhoneUser(payload)
+      this.addPhonePrimary(payload)
         .then((res) => {
           Swal.fire({
             icon: 'success',
-            title: 'Deleted success',
+            title: 'Phonenumber has been Updated',
             showConfirmButton: false,
             timer: 2000
           })
@@ -106,15 +77,12 @@ export default {
           console.log(err.response.data.error.message)
           Swal.fire({
             icon: 'error',
-            title: 'Deleted failed',
+            title: 'Failed to add phonenumber',
             showConfirmButton: false,
             timer: 2000
           })
         })
     }
-  },
-  computed: {
-    ...mapGetters(['phoneUser', 'userLogin'])
   }
 }
 </script>
@@ -230,82 +198,73 @@ nav ul li p .link:hover {
     text-align: left;
 }
 
-.content .content-box section .box .add {
-  display: flex;
-  width: 100%;
-  margin-top: 5%;
-  justify-content: flex-end;
-}
-
-.content .content-box section .box .add p {
-  width: max-content;
-}
-
-.content .content-box section .box .add p .link {
-  text-decoration: none;
-  color: rgb(99, 121, 244, 1);
-}
-
-.content .content-box section .box .add p .link:hover{
-  color: rgba(0, 0, 0, 0.8);
-}
-
-.content .content-box section .box .box-manage-phone {
+.content .content-box section .box .box-password {
     display: flex;
+    flex-direction: column;
     width: 100%;
     justify-content: center;
     align-items: center;
-    height: 92px;
-    background-color: #FFFFFF;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
-    margin-top: 3%;
+
 }
 
-.content .content-box section .box .box-manage-phone .box {
+.content .content-box section .box .box-password .input-password {
     display: flex;
-    flex-direction: row;
-    width: 95%;
+    width: 50%;
+    border-bottom: 1.5px solid rgba(169, 169, 169, 0.6);
+    height: 37px;
     align-items: center;
+    color: rgba(169, 169, 169, 0.8);
+    margin-top: 10%;
 }
 
-.content .content-box section .box .box-manage-phone .box .phone-number {
-    display: flex;
-    flex-direction: column;
-}
-
-.content .content-box section .box .box-manage-phone .box .phone-number span {
-    color: #7A7886;
-    font-weight: normal;
+.content .content-box section .box .box-password .input-password .code-phone {
+    margin-left: 3%;
     font-size: 16px;
-    text-align: left;
+    font-weight: 600;
+    color: #3A3D42;
 }
 
-.content .content-box section .box .box-manage-phone .box .phone-number p {
-    color: #514F5B;
-    font-weight: bold;
-    font-size: 22px;
-    margin-bottom: auto;
-    width: max-content;
-}
-
-.content .content-box section .box .box-manage-phone .box button {
-    width: 40px;
-    height: 40px;
-    margin-left: auto;
+.content .content-box section .box .box-password .input-password input {
     border: none;
+    margin-left: 3%;
+    font-size: 16px;
+    font-weight: normal;
+    color: rgba(169, 169, 169, 0.8);
     background: transparent;
-    cursor: pointer;
 }
 
-.content .content-box section .box .box-manage-phone .box button {
-    width: 40px;
-    height: 40px;
-    margin-left: auto;
+.content .content-box section .box .box-password .input-password input::placeholder {
+    color: rgba(169, 169, 169, 0.8);
 }
 
-.content .content-box section .box .box-manage-phone .box button img {
-    width: 28px;
-    height: 28px;
+.content .content-box section .box .box-password .input-password input:focus {
+    outline: none;
+}
+
+.content .content-box section .box .box-password .input-password img {
+    width: 24px;
+    height: 24px;
+}
+
+.content .content-box section .box .box-password button {
+    width: 50%;
+    height: 57px;
+    box-shadow: 0px 6px 75px rgba(100, 87, 87, 0.05);
+    border-radius: 12px;
+    background-color: #DADADA;
+    border: none;
+    margin-top: 10%;
+    color: #88888F;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.content .content-box section .box .box-password button:focus {
+    outline: none;
+}
+
+.content .content-box section .box .box-password button:hover {
+    background-color: #6379F4;
+    color: #FFFFFF;
 }
 </style>

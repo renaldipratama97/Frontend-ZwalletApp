@@ -11,6 +11,7 @@ import PersonalInformation from '../views/main/PersonalInformation.vue'
 import ManagePhone from '../views/main/ManagePhone.vue'
 import Inputtransfer from '../views/main/Inputtransfer.vue'
 import AddPhone from '../views/main/AddPhone.vue'
+import AddPhonePrimary from '../views/main/AddPhonePrimary.vue'
 import store from '../store/index'
 
 Vue.use(VueRouter)
@@ -75,6 +76,11 @@ const routes = [
     path: '/add-phone',
     name: 'AddPhone',
     component: AddPhone
+  },
+  {
+    path: '/add-phone-primary/:idUser',
+    name: 'AddPhonePrimary',
+    component: AddPhonePrimary
   }
 ]
 

@@ -17,10 +17,11 @@
             <section>
                 <div class="box">
                     <div class="profile">
+                        <input type="file" name="picture" accept="image/x-png/,image/gif,image/jpeg" @change="uploadPicture" class="uploadpicture" id="uploadpicture">
                         <img v-if="userLogin.picture" :src="userLogin.picture">
                         <img v-else src="../../assets/default.jpg">
                         <div class="edit">
-                            <span>Edit</span>
+                            <span><label for="uploadpicture">Edit</label></span>
                         </div>
                         <span v-if="userLogin.firstname && userLogin.lastname">{{userLogin.firstname}} {{userLogin.lastname}}</span>
                         <span v-else> - </span>
@@ -64,16 +65,31 @@ export default {
     }
   },
   mounted () {
-    this.getTransactions()
     this.getUserLogin()
   },
   methods: {
-    ...mapActions(['getUserLogin']),
+    ...mapActions(['getUserLogin', 'updatePicture']),
     navigationHandle () {
       this.$router.push({ name: 'PersonalInformation' })
     },
     logoutHandle () {
       this.$router.push({ name: 'Login' })
+    },
+    async uploadPicture () {
+      const imagename = (event.target.files[0].name)
+      this.picture = imagename
+      this.previewImg = URL.createObjectURL(event.target.files[0])
+      const form = new FormData()
+      const image = document.getElementById('uploadpicture').files[0]
+      form.append('picture', image)
+      const id = localStorage.getItem('id')
+      const payload = {
+        id,
+        formData: form
+      }
+      // console.log('Data Gambar', payload.formData)
+      // console.log('Data ID', payload.id)
+      await this.updatePicture(payload)
     }
   },
   computed: {
@@ -156,6 +172,10 @@ nav ul li p .link:hover {
     color: rgb(99, 121, 244, 1);
 }
 
+.uploadpicture {
+    display: none;
+}
+
 .content .content-box section {
     display: flex;
     justify-content: center;
@@ -195,18 +215,18 @@ nav ul li p .link:hover {
     width: 100%;
     height: 20px;
     margin-top: 1%;
-}
-
-.content .content-box section .box .profile .edit img {
-    width: 11px;
-    height: 11px;
-    margin-right: 2%;
+    cursor: pointer;
 }
 
 .content .content-box section .box .profile .edit span {
     color: #7A7886;
     font-size: 16px;
     font-weight: normal;
+    cursor: pointer;
+}
+
+.content .content-box section .box .profile .edit span label{
+    cursor: pointer;
 }
 
 .content .content-box section .box .profile span {

@@ -46,6 +46,12 @@ export default new Vuex.Store({
         lastname: payload
       }
     },
+    SET_PICTURE (state, payload) {
+      state.userLogin = {
+        ...state.userLogin,
+        picture: payload
+      }
+    },
     REMOVE_TOKEN (state) {
       state.accessToken = null
       state.refreshToken = null
@@ -223,6 +229,52 @@ export default new Vuex.Store({
           .catch((err) => {
             reject(err)
           })
+      })
+    },
+    updatePicture (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.patch(`${process.env.VUE_APP_BASE_URL}/users/updatepicture/${payload.id}`, payload.formData)
+          .then((res) => {
+            console.log(payload.formData)
+            context.commit('SET_PICTURE', payload.formData)
+            Swal.fire({
+              icon: 'success',
+              title: 'Update picture Success',
+              showConfirmButton: false,
+              timer: 1500
+            })
+            this.router.push('/profil')
+            resolve(res)
+          })
+          .catch((err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Update picture failed',
+              showConfirmButton: false,
+              timer: 1500
+            })
+            reject(err)
+          })
+      })
+    },
+    addPhonePrimary (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.patch(`${process.env.VUE_APP_BASE_URL}/users/updatephonenumber/${payload.id}`, payload)
+          .then((res) => {
+            resolve(res)
+          })
+          .catch((err) => {
+            console.log(err.response.data.error.message)
+            reject(err)
+          })
+      })
+    },
+    interceptorRequest () {
+      axios.interceptors.request.use(function (config) {
+        config.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`
+        return config
+      }, function (error) {
+        return Promise.reject(error)
       })
     }
   },

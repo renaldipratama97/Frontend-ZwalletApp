@@ -87,7 +87,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 html,
 body {
     margin: 0;
@@ -165,7 +165,7 @@ body {
     justify-content: center;
     width: 40%;
     height: 100%;
-    background: rgba(99, 121, 244, 0.2);
+    background-color: rgb(248, 248, 248);
 }
 
 .container .login-box .box {
