@@ -76,18 +76,14 @@ export default {
       this.$router.push({ name: 'Login' })
     },
     async uploadPicture () {
-      const imagename = (event.target.files[0].name)
-      this.picture = imagename
+      const image = (event.target.files[0])
+      this.picture = image
       this.previewImg = URL.createObjectURL(event.target.files[0])
-      const form = new FormData()
-      const image = document.getElementById('uploadpicture').files[0]
-      form.append('picture', image)
       const id = localStorage.getItem('id')
       const payload = {
         id,
-        formData: form
+        image
       }
-      // console.log('Data Gambar', payload.formData)
       // console.log('Data ID', payload.id)
       await this.updatePicture(payload)
     }

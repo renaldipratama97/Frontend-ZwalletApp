@@ -73,4 +73,28 @@ footer .box .contact-mail {
     font-weight: 600;
     line-height: 28px;
 }
+
+@media only screen and (max-width: 480px) {
+    footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: max-content;
+    }
+
+    footer .box{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 90%;
+        height: max-content;
+    }
+
+    footer .box .contact-hp {
+      margin-left: 0;
+    }
+}
 </style>

@@ -14,7 +14,8 @@ export default new Vuex.Store({
     search: [],
     userLogin: {},
     phone: {},
-    toTransfer: {}
+    toTransfer: {},
+    transactions: {}
   },
   mutations: {
     SET_USER (state, payload) {
@@ -59,6 +60,9 @@ export default new Vuex.Store({
     },
     SET_SEARCH_USERNAME (state, payload) {
       state.search = payload
+    },
+    SET_TRANSACTION (state, payload) {
+      state.transactions = payload
     }
   },
   actions: {
@@ -233,10 +237,12 @@ export default new Vuex.Store({
     },
     updatePicture (context, payload) {
       return new Promise((resolve, reject) => {
-        axios.patch(`${process.env.VUE_APP_BASE_URL}/users/updatepicture/${payload.id}`, payload.formData)
+        const formData = new FormData()
+        formData.append('picture', payload.image)
+        axios.patch(`${process.env.VUE_APP_BASE_URL}/users/updatepicture/${payload.id}`, formData)
           .then((res) => {
-            console.log(payload.formData)
-            context.commit('SET_PICTURE', payload.formData)
+            console.log(payload.image.name)
+            context.commit('SET_PICTURE', URL.createObjectURL(payload.image))
             Swal.fire({
               icon: 'success',
               title: 'Update picture Success',
@@ -269,6 +275,19 @@ export default new Vuex.Store({
           })
       })
     },
+    getTransactionLogin (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.get(`${process.env.VUE_APP_BASE_URL}/transfer/getTransaction/${localStorage.id}`)
+          .then((res) => {
+            const result = res.data.result
+            context.commit('SET_TRANSACTION', result)
+            resolve(result)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
+    },
     interceptorRequest () {
       axios.interceptors.request.use(function (config) {
         config.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`
@@ -296,6 +315,9 @@ export default new Vuex.Store({
     },
     toTransfer (state) {
       return state.toTransfer
+    },
+    resultTransactions (state) {
+      return state.transactions
     }
   },
   modules: {

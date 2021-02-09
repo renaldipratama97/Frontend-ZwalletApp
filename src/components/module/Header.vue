@@ -110,4 +110,26 @@ header .box .profil .notification img {
     width: 18px;
     height: 15px;
 }
+
+@media only screen and (max-width: 480px) {
+    header {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 150px;
+    }
+
+    header .box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        height: 100%;
+    }
+
+    header .box .profil {
+        margin-left: 0;
+    }
+}
 </style>

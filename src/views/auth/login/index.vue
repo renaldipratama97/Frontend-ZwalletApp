@@ -20,17 +20,21 @@
                 <div class="input-box">
                     <div class="input">
                         <img src="../../../assets/img/mail.svg">
-                        <input type="text" v-model="email" name="email" placeholder="Enter your e-mail" required>
+                        <input type="email" v-model.trim="$v.email.$model" :class="{ 'is-invalid': validationStatus($v.email) }" name="email" placeholder="Enter your e-mail">
                     </div>
                 </div>
+                <div class="invalid-feedback" v-if="!$v.email.required">Field is required.</div>
+                <div class="invalid-feedback" v-if="!$v.email.email">invalid email</div>
 
                 <div class="input-box">
                     <div class="input">
                         <img src="../../../assets/img/lock.svg">
-                        <input type="password" v-model="password" name="email" placeholder="Create your password" required>
+                        <input type="password" v-model.trim="$v.password.$model" :class="{ 'is-invalid': validationStatus($v.password) }" name="email" placeholder="Create your password" required>
                         <img src="../../../assets/img/eye.svg">
                     </div>
                 </div>
+                <div class="invalid-feedback" v-if="!$v.password.required">Field is required.</div>
+                <div class="invalid-feedback" v-if="!$v.password.minLength">Field must have at least {{ $v.password.$params.minLength.min }} characters.</div>
 
                 <div class="forgot-password">
                     <p>Forgot password?</p>
@@ -47,6 +51,7 @@
 <script>
 import { mapActions } from 'vuex'
 import Swal from 'sweetalert2'
+import { required, minLength, email } from 'vuelidate/lib/validators'
 
 export default {
   name: 'Login',
@@ -56,9 +61,18 @@ export default {
       password: ''
     }
   },
+  validations: {
+    email: { required, email },
+    password: { required, minLength: minLength(6) }
+  },
   methods: {
     ...mapActions(['login']),
+    validationStatus (validation) {
+      return typeof validation !== 'undefined' ? validation.$error : false
+    },
     methodLogin () {
+      this.$v.$touch()
+      if (this.$v.$pendding || this.$v.$error) return
       const payload = {
         email: this.email,
         password: this.password
@@ -93,6 +107,13 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+.invalid-feedback {
+  width: 85%;
+  color: red;
+  font-size: 10px;
+  border-top: 0.5px solid red;
 }
 
 .container {
@@ -447,40 +468,13 @@ body {
     }
 
     .container aside {
-        display: flex;
-        width: 100%;
-        height: 20%;
-        background-image: none;
-        background: rgba(99, 121, 244, 0.2);
-    }
-
-    .container aside .box {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-    }
-
-    .container aside .box .title {
-        color: #6379F4;
-    }
-
-    .container aside .box img {
-        display: none;
-    }
-
-    .container aside .box .app {
-        display: none;
-    }
-
-    .container aside .box p {
         display: none;
     }
 
     .container .login-box {
         width: 100%;
         height: 80%;
-        background-color: #FFFFFF;
+        background-color: #ff2c2c;
         box-shadow: 0px 0px 75px rgba(155, 155, 155, 0.15);
         border-radius: 20px;
     }
@@ -507,6 +501,15 @@ body {
         font-size: 24px;
         line-height: 33px;
         color: #3A3D42;
+    }
+
+    .container .login-box .box form {
+        width: 100%;
+        border: 1px solid black;
+    }
+
+    .container .login-box .box form .input-box {
+        border: 1px solid black;
     }
 }
 </style>

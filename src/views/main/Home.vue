@@ -58,42 +58,14 @@
                                 <span>Transaction History</span>
                                 <p>See all</p>
                             </div>
-                            <p>This Week</p>
-                            <div class="transaction">
-                                <img src="../../assets/img/man.png">
+                            <div class="transaction" v-for="transactions in resultTransactions" :key="transactions.idTransfer">
+                                <img v-if="transactions.picture" :src="transactions.picture">
+                                <img v-else src="../../assets/default.jpg">
                                 <div class="status">
-                                    <div class="name">Samuel Suhi</div>
+                                    <div class="name">{{transactions.firstname}}</div>
                                     <p>Transfer</p>
                                 </div>
-                                <div class="money-one">+Rp.50.000</div>
-                            </div>
-
-                            <div class="transaction">
-                                <img src="../../assets/img/logo-netflix.png">
-                                <div class="status">
-                                    <div class="name">Netflix</div>
-                                    <p>Subscription</p>
-                                </div>
-                                <div class="money-two">-Rp.149.000</div>
-                            </div>
-
-                            <p class="month">This Month</p>
-                            <div class="transaction">
-                                <img src="../../assets/img/women.png">
-                                <div class="status">
-                                    <div class="name">Christin Mar...</div>
-                                    <p>Transfer</p>
-                                </div>
-                                <div class="money-one">+Rp.150.000</div>
-                            </div>
-
-                            <div class="transaction">
-                                <img src="../../assets/img/logo-adobe.png">
-                                <div class="status">
-                                    <div class="name">Adobe Inc.</div>
-                                    <p>Subscription</p>
-                                </div>
-                                <div class="money-two">-Rp.249.000</div>
+                                <div class="money-one">{{transactions.amount}}</div>
                             </div>
                         </div>
                     </div>
@@ -124,7 +96,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getUserLogin']),
+    ...mapActions(['getUserLogin', 'getTransactionLogin']),
     toTopup () {
       this.$router.push({ name: 'Topup' })
     },
@@ -133,15 +105,21 @@ export default {
     }
   },
   mounted () {
+    this.getTransactionLogin()
     this.getUserLogin()
   },
   computed: {
-    ...mapGetters(['userLogin'])
+    ...mapGetters(['userLogin', 'resultTransactions'])
   }
 }
 </script>
 
 <style scoped>
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
 .content{
   display: flex;
   justify-content: center;
@@ -288,6 +266,7 @@ nav ul li p .link:hover {
 
 .content .content-box section .two-content {
     display: flex;
+    flex-direction: row !important;
     width: 100%;
     height: 72%;
     margin-top: 3%;
@@ -416,8 +395,6 @@ nav ul li p .link:hover {
     width: max-content;
 }
 
-/*  */
-
 .content .content-box section .two-content .transaction-history .box p {
     font-size: 16px;
     font-weight: normal;
@@ -473,4 +450,84 @@ nav ul li p .link:hover {
     font-weight: bold;
     margin-left: auto;
 }
+
+/* @media only screen and (max-width: 576px) {
+    .content {
+        display: flex;
+        width: 100%;
+        height: max-content;
+    }
+
+    .content .content-box {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: max-content;
+    }
+
+    .content .content-box nav {
+        display: none;
+        flex-direction: row;
+        width: 100%;
+        height: max-content;
+    }
+
+    nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    }
+
+nav ul li{
+    list-style: none;
+    display: flex;
+}
+
+nav ul li img{
+    width: 28px;
+    height: 28px;
+}
+
+nav ul li p{
+    margin-left: 8%;
+    display: none;
+}
+
+nav ul li p .link:hover {
+    color: rgb(99, 121, 244, 1);
+}
+}
+
+.content .content-box section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: max-content + 10px;
+    margin-top: 10px;
+}
+
+.content .content-box section .two-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(max-content + 100px);
+}
+
+.content .content-box section .two-content .chart{
+    display: flex;
+    width: 100%;
+    height: max-content;
+}
+
+.content .content-box section .two-content .transaction-history{
+    display: flex;
+    width: 100%;
+    height: calc(max-content + 10px);
+    margin-top: 10px;
+} */
 </style>

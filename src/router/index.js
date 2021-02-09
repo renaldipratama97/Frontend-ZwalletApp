@@ -12,6 +12,7 @@ import ManagePhone from '../views/main/ManagePhone.vue'
 import Inputtransfer from '../views/main/Inputtransfer.vue'
 import AddPhone from '../views/main/AddPhone.vue'
 import AddPhonePrimary from '../views/main/AddPhonePrimary.vue'
+import TransactionHistory from '../views/main/TransactionHistory.vue'
 import store from '../store/index'
 
 Vue.use(VueRouter)
@@ -81,6 +82,11 @@ const routes = [
     path: '/add-phone-primary/:idUser',
     name: 'AddPhonePrimary',
     component: AddPhonePrimary
+  },
+  {
+    path: '/transactions-history',
+    name: 'TransactionHistory',
+    component: TransactionHistory
   }
 ]
 
