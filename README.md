@@ -1,4 +1,4 @@
-# Frontend Ankasa Ticketing
+# Frontend Zwallet Application
 This is a Frontend Zwallet Application created using vue JS, in which it has several pages such as Homepage, User Profiles, History Transaction Page, Search Receiver Page, and Transfer Page.
 
 ## Requirements

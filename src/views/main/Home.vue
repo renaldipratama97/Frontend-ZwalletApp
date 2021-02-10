@@ -56,7 +56,7 @@
                         <div class="box">
                             <div class="transaction-history-title">
                                 <span>Transaction History</span>
-                                <p>See all</p>
+                                <p @click="goTransactionHistory">See all</p>
                             </div>
                             <div class="transaction" v-for="transactions in resultTransactions" :key="transactions.idTransfer">
                                 <img v-if="transactions.picture" :src="transactions.picture">
@@ -65,7 +65,7 @@
                                     <div class="name">{{transactions.firstname}}</div>
                                     <p>Transfer</p>
                                 </div>
-                                <div class="money-one">{{transactions.amount}}</div>
+                                <div class="money-two">Rp. {{transactions.amount}}</div>
                             </div>
                         </div>
                     </div>
@@ -102,6 +102,9 @@ export default {
     },
     toTransfer () {
       this.$router.push({ name: 'Transfer' })
+    },
+    goTransactionHistory () {
+      this.$router.push({ name: 'TransactionHistory' })
     }
   },
   mounted () {
@@ -393,6 +396,7 @@ nav ul li p .link:hover {
     color: #6379F4;
     margin-left: auto;
     width: max-content;
+    cursor: pointer;
 }
 
 .content .content-box section .two-content .transaction-history .box p {

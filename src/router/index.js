@@ -13,6 +13,7 @@ import Inputtransfer from '../views/main/Inputtransfer.vue'
 import AddPhone from '../views/main/AddPhone.vue'
 import AddPhonePrimary from '../views/main/AddPhonePrimary.vue'
 import TransactionHistory from '../views/main/TransactionHistory.vue'
+import DetailTransaction from '../views/main/DetailTransaction.vue'
 import store from '../store/index'
 
 Vue.use(VueRouter)
@@ -87,6 +88,11 @@ const routes = [
     path: '/transactions-history',
     name: 'TransactionHistory',
     component: TransactionHistory
+  },
+  {
+    path: '/detail-transaction/:idTransfer',
+    name: 'DetailTransaction',
+    component: DetailTransaction
   }
 ]
 

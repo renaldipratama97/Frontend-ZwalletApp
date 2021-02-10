@@ -18,6 +18,19 @@
             <section>
               <div class="box">
                 <div class="page-title">Transactions History</div>
+
+                <div class="box-history-transfer">
+                  <div @click="goDetailTransfer(transactions.idTransfer)" class="white-box" v-for="transactions in resultTransactions" :key="transactions.idTransfer">
+                    <img v-if="transactions.picture" :src="transactions.picture" alt="picture">
+                    <img v-else src="../../assets/default.jpg" alt="picture">
+                    <div class="name-transfer">
+                      <div class="name">{{transactions.firstname}}</div>
+                      <div class="transfer">Transfer</div>
+                    </div>
+                    <div class="amount">Rp. {{transactions.amount}}</div>
+                  </div>
+
+                </div>
               </div>
             </section>
           </div>
@@ -42,19 +55,21 @@ export default {
     return {
       author: '2020 Zwallet. All right reserved',
       hp: '+62 5637 8882 9901',
-      mail: 'contact@zwallet.com',
-      amount: '',
-      notes: ''
+      mail: 'contact@zwallet.com'
     }
   },
   mounted () {
     this.getUserLogin()
+    this.getTransactionLogin()
   },
   methods: {
-    ...mapActions(['getUserLogin'])
+    ...mapActions(['getUserLogin', 'getTransactionLogin']),
+    goDetailTransfer (idTransfer) {
+      this.$router.push({ name: 'DetailTransaction', params: { idTransfer } })
+    }
   },
   computed: {
-    ...mapGetters(['userLogin'])
+    ...mapGetters(['userLogin', 'resultTransactions'])
   }
 
 }
@@ -64,6 +79,10 @@ export default {
 *{
   padding: 0px;
   margin: 0px;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 .content{
@@ -159,6 +178,67 @@ nav ul li p .link:hover {
   font-size: 18px;
   line-height: 25px;
   color: #3A3D42;
+}
+
+.box-history-transfer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: max-content;
+  overflow:auto;
+  scroll-behavior: smooth;
+}
+
+.box-history-transfer .white-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  background: rgb(255, 255, 255);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  margin-top: 2%;
+}
+
+.box-history-transfer .white-box img{
+  border-radius: 10px;
+  width: 56px;
+  height: 56px;
+  margin-left: 2%;
+  cursor: pointer;
+}
+
+.box-history-transfer .white-box .name-transfer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-style: normal;
+  color: #4D4B57;
+  height: 100%;
+  margin-left: 3%;
+}
+
+.box-history-transfer .white-box .name-transfer .name{
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.box-history-transfer .white-box .name-transfer .transfer{
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 19px;
+}
+
+.box-history-transfer .white-box .amount{
+  display: flex;
+  margin-left: auto;
+  margin-right: 3%;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 22px;
+  color: #ff0000;
 }
 
 </style>

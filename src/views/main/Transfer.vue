@@ -16,7 +16,13 @@
             </nav>
             <section>
                 <div class="box">
+                  <div class="title-sort">
                     <div class="search-receiver">Search Receiver</div>
+                    <div class="sort">
+                      <button @click.prevent="ascSort">ASC</button>
+                      <button @click.prevent="descSort">DESC</button>
+                    </div>
+                  </div>
                     <div class="search-input">
                         <img src="../../assets/img/search.png">
                         <input type="text" @keyup.enter="searchReceiver" name="search" id="search"  placeholder="Search receiver here" autocomplete="off">
@@ -61,12 +67,18 @@ export default {
   },
   mounted () {
     this.searchUser('')
+    this.sortUser('ASC')
   },
   methods: {
-    ...mapActions(['searchUser']),
+    ...mapActions(['searchUser', 'sortUser']),
     searchReceiver (e) {
-      console.log(e.target.value)
       this.searchUser(e.target.value)
+    },
+    ascSort () {
+      this.sortUser('ASC')
+    },
+    descSort () {
+      this.sortUser('DESC')
     }
   },
   computed: {
@@ -168,11 +180,49 @@ nav ul li p .link:hover {
     height: 90%;
 }
 
-.content .content-box section .box .search-receiver {
-    font-size: 18px;
-    font-weight: 700;
-    color: #3A3D42;
-    margin-left: 0px;
+.box .title-sort {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: max-content;
+}
+
+.box .title-sort .search-receiver{
+  display: flex;
+  width: 50%;
+  font-size: 18px;
+  font-weight: 700;
+  color: #3A3D42;
+  margin-left: 0px;
+}
+
+.box .title-sort .sort{
+  display: flex;
+  width: 50%;
+}
+
+.box .title-sort .sort button{
+  width: 15%;
+  height: 30px;
+  background: #6379F4;
+  box-shadow: 0px 6px 75px rgba(100, 87, 87, 0.05);
+  border-radius: 5px;
+  border: none;
+  color: #FFFFFF;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 25px;
+  cursor: pointer;
+}
+
+.box .title-sort .sort button:hover {
+  background: #2243fa;
+}
+
+.box .title-sort .sort button:nth-child(1){
+  margin-left: auto;
+  margin-right: 2%;
 }
 
 .content .content-box section .box .search-input {

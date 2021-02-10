@@ -15,7 +15,8 @@ export default new Vuex.Store({
     userLogin: {},
     phone: {},
     toTransfer: {},
-    transactions: {}
+    transactions: {},
+    detailTransaction: {}
   },
   mutations: {
     SET_USER (state, payload) {
@@ -53,6 +54,9 @@ export default new Vuex.Store({
         picture: payload
       }
     },
+    SET_DETAIL_TRANSACTION (state, payload) {
+      state.detailTransaction = payload
+    },
     REMOVE_TOKEN (state) {
       state.accessToken = null
       state.refreshToken = null
@@ -61,11 +65,29 @@ export default new Vuex.Store({
     SET_SEARCH_USERNAME (state, payload) {
       state.search = payload
     },
+    SET_SORT_USERNAME (state, payload) {
+      state.search = payload
+    },
     SET_TRANSACTION (state, payload) {
       state.transactions = payload
     }
   },
   actions: {
+    sortUser (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.get(`${process.env.VUE_APP_BASE_URL}/users?order=${payload}`)
+          .then((res) => {
+            console.log(res)
+            const result = res.data.result.users
+            context.commit('SET_SORT_USERNAME', result)
+            resolve(result)
+          })
+          .catch((err) => {
+            console.log(err)
+            reject(err)
+          })
+      })
+    },
     searchUser (context, payload) {
       return new Promise((resolve, reject) => {
         axios.get(`${process.env.VUE_APP_BASE_URL}/users?username=${payload}`)
@@ -288,6 +310,19 @@ export default new Vuex.Store({
           })
       })
     },
+    getDetailTransaction (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.get(`${process.env.VUE_APP_BASE_URL}/transfer/detailTransaction/${payload.id}`)
+          .then((res) => {
+            const result = res.data.result[0]
+            context.commit('SET_DETAIL_TRANSACTION', result)
+            resolve(result)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
+    },
     interceptorRequest () {
       axios.interceptors.request.use(function (config) {
         config.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`
@@ -318,6 +353,9 @@ export default new Vuex.Store({
     },
     resultTransactions (state) {
       return state.transactions
+    },
+    detailTransaction (state) {
+      return state.detailTransaction
     }
   },
   modules: {
