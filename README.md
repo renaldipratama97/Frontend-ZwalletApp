@@ -22,7 +22,7 @@ VUE_APP_URL_BACKEND = [backend api]
 ```
 # Screenshots
 <div display="flex" align="center">
-<img src="https://user-images.githubusercontent.com/26200397/104165116-882e6180-542b-11eb-97db-0a2055bc234b.png" width="300">
+<img src="https://user-images.githubusercontent.com/72293996/107486513-b6809780-6bb7-11eb-8189-5799d109e00f.png" width="300">
 <img src="https://user-images.githubusercontent.com/26200397/104165121-895f8e80-542b-11eb-9bd4-879b0cf29399.png" width="300">
 <img src="https://user-images.githubusercontent.com/26200397/104165130-8bc1e880-542b-11eb-94ad-0f975da71d22.png" width="300">
 <img src="https://user-images.githubusercontent.com/26200397/104165140-8c5a7f00-542b-11eb-8f43-605c79e1119a.png" width="300">
