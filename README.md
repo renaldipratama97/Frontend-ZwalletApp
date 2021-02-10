@@ -3,7 +3,7 @@ This is a Frontend Zwallet Application created using vue JS, in which it has sev
 
 ## Requirements
 * **[VueJS](https://cli.vuejs.org/guide/installation.html)**
-* **[Backend ZwalletApp](https://bootstrap-vue.org/)**
+* **[Vue Bootstrap](https://bootstrap-vue.org/)**
 * **[jsPDF](https://www.npmjs.com/package/jspdf)**
 
 ## Related Project
