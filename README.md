@@ -27,6 +27,7 @@ VUE_APP_URL_BACKEND = [backend api]
 <img src="https://user-images.githubusercontent.com/72293996/107486785-065f5e80-6bb8-11eb-8242-893bd8f88e06.png" width="300">
 <img src="https://user-images.githubusercontent.com/72293996/107486845-170fd480-6bb8-11eb-9bab-8f3003172d11.png" width="300">
 <img src="https://user-images.githubusercontent.com/72293996/107486890-255df080-6bb8-11eb-982b-428b6eb87eea.png" width="300">
+</div>
 
 # Author
 This project was built by :
