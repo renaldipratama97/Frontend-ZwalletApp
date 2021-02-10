@@ -275,4 +275,36 @@ nav ul li p .link:hover {
     background-color: #6379F4;
     color: #FFFFFF;
 }
+
+@media only screen and (max-width: 576px) {
+    .content {
+        display: flex;
+        width: 100%;
+        height: max-content;
+    }
+
+    .content .content-box{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: max-content;
+    }
+
+    .content .content-box nav{
+        display: none;
+    }
+
+    .content .content-box section{
+        width: 100%;
+        height: 600px;
+    }
+
+    .content .content-box section .box .menu{
+        width: 100%;
+    }
+
+    .content .content-box section .box .menu button{
+        width: 100%;
+    }
+}
 </style>

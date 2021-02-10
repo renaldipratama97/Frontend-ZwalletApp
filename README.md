@@ -2,7 +2,11 @@
 This is a Frontend Zwallet Application created using vue JS, in which it has several pages such as Homepage, User Profiles, History Transaction Page, Search Receiver Page, and Transfer Page.
 
 ## Requirements
-* **[Vue Documentation](https://cli.vuejs.org/guide/installation.html)**
+* **[VueJS](https://cli.vuejs.org/guide/installation.html)**
+* **[Backend ZwalletApp](https://bootstrap-vue.org/)**
+* **[jsPDF](https://www.npmjs.com/package/jspdf)**
+
+## Related Project
 * **[Backend ZwalletApp](https://github.com/renaldipratama97/Backend-ZwalletApp.git)**
 
 # Installation

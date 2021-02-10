@@ -66,7 +66,7 @@
 import Header from '../../components/module/Header'
 import Footer from '../../components/module/Footer'
 import { mapGetters, mapActions } from 'vuex'
-const { JsPDF } = require('jspdf')
+import JsPDF from 'jspdf'
 // import Swal from 'sweetalert2'
 export default {
   name: 'DetailTransaction',
@@ -98,13 +98,12 @@ export default {
       this.$router.push('/')
     },
     printPDF () {
-      const doc = new JsPDF('p', 'pt', 'letter')
-
-      const html = this.$refs.pdfContent.innerHTML
-
-      doc.fromHTML(html, 15, 15, {
-        width: 500
+      const doc = new JsPDF({
+        orientation: 'landscape',
+        unit: 'in',
+        format: [4, 2]
       })
+      doc.text('ZwalletApp', 10, 10)
       doc.save('ZwalletApp.pdf')
     }
   },
@@ -347,5 +346,29 @@ nav ul li p .link:hover {
 
 .button button:nth-child(1) {
   margin-right: 2%;
+}
+
+@media only screen and (max-width: 576px) {
+    .content {
+        display: flex;
+        width: 100%;
+        height: max-content;
+    }
+
+    .content .content-box{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: max-content;
+    }
+
+    .content .content-box nav{
+        display: none;
+    }
+
+    .content .content-box section{
+        width: 100%;
+        height: 650px;
+    }
 }
 </style>

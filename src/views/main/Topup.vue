@@ -222,4 +222,31 @@ nav ul li p .link:hover {
     font-weight: normal;
     margin-left: 3%;
 }
+
+@media only screen and (max-width: 576px) {
+    .content {
+        display: flex;
+        width: 100%;
+        height: max-content;
+    }
+
+    .content .content-box{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: max-content;
+    }
+
+    .content .content-box nav{
+        display: none;
+    }
+
+    .content .content-box section{
+        width: 100%;
+    }
+
+    .content .content-box section .box {
+      margin-top: 10px;
+    }
+}
 </style>
