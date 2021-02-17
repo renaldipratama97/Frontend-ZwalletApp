@@ -6,15 +6,16 @@
             <nav>
             <!-- <div class="box"> -->
                 <ul>
-                    <li><img src="../../assets/img/grid.png"><p><router-link class="link" to="/">Dashboard</router-link></p></li>
-                    <li><img src="../../assets/img/arrow-up.png"><p><router-link class="link" to="/transfer">Transfer</router-link></p></li>
-                    <li><img src="../../assets/img/plus.png"><p><router-link class="link" to="/topup">Topup</router-link></p></li>
-                    <li><img src="../../assets/img/user.png"><p><router-link class="link" to="/profil">Profil</router-link></p></li>
-                    <li><img src="../../assets/img/log-out.png"><p><router-link class="link" to="/auth/login">Logout</router-link></p></li>
+                    <li><img @click.prevent="goHome" src="../../assets/img/grid.png"><p><router-link class="link" to="/">Dashboard</router-link></p></li>
+                    <li><img @click.prevent="goTransfer" src="../../assets/img/arrow-up.png"><p><router-link class="link" to="/transfer">Transfer</router-link></p></li>
+                    <li><img @click.prevent="goTopUp" src="../../assets/img/plus.png"><p><router-link class="link" to="/topup">Topup</router-link></p></li>
+                    <li><img @click.prevent="goProfile" src="../../assets/img/user.png"><p><router-link class="link" to="/profil">Profil</router-link></p></li>
+                    <li><img @click.prevent="goLogout" src="../../assets/img/log-out.png"><p><router-link class="link" to="/">Logout</router-link></p></li>
                 </ul>
             <!-- </div> -->
             </nav>
             <section>
+              <div class="box">
                 <div class="balance-box">
                     <div class="money-balance">
                         <p>Balance</p>
@@ -53,7 +54,7 @@
                         </div>
                     </div>
                     <div class="transaction-history">
-                        <div class="box">
+                        <div class="box-transaction">
                             <div class="transaction-history-title">
                                 <span>Transaction History</span>
                                 <p @click="goTransactionHistory">See all</p>
@@ -70,6 +71,7 @@
                         </div>
                     </div>
                 </div>
+              </div>
             </section>
           </div>
         </div>
@@ -97,6 +99,21 @@ export default {
   },
   methods: {
     ...mapActions(['getUserLogin', 'getTransactionLogin']),
+    goHome () {
+      this.$router.push('/')
+    },
+    goTransfer () {
+      this.$router.push('/transfer')
+    },
+    goTopUp () {
+      this.$router.push('/topup')
+    },
+    goProfile () {
+      this.$router.push('/profil')
+    },
+    goLogout () {
+      this.$router.push('/')
+    },
     toTopup () {
       this.$router.push({ name: 'Topup' })
     },
@@ -118,24 +135,25 @@ export default {
 </script>
 
 <style scoped>
-html, body {
-    margin: 0;
-    padding: 0;
+*{
+  padding: 0px;
+  margin: 0px;
 }
 
 .content{
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 678px;
+  height: 650px;
   margin-top: 35px;
 }
 
 .content .content-box{
-    display: flex;
     width: 75%;
     height: 100%;
+    display: flex;
 }
 
 nav {
@@ -174,6 +192,7 @@ nav ul li:nth-child(5){
 nav ul li img{
     width: 28px;
     height: 28px;
+    margin-left: 10%;
 }
 
 nav ul li p{
@@ -191,24 +210,33 @@ nav ul li p .link:hover {
 
 .content .content-box section {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     width: 73%;
     height: 100%;
+    border-radius: 25px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
     margin-left: auto;
-    background-color: transparent;
 }
 
-.content .content-box section .balance-box {
+.content .content-box section .box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.content .content-box section .box .balance-box {
     display: flex;
     width: 100%;
-    height: 25%;
+    height: 30%;
     justify-content: center;
     align-items: center;
     background-color: #6379F4;
     border-radius: 20px;
 }
 
-.content .content-box section .balance-box .money-balance {
+.content .content-box section .box .balance-box .money-balance {
     display: flex;
     flex-direction: column;
     width: 60%;
@@ -216,21 +244,21 @@ nav ul li p .link:hover {
     justify-content: space-around;
 }
 
-.content .content-box section .balance-box .money-balance p {
+.content .content-box section .box .balance-box .money-balance p {
     font-weight: normal;
     font-size: 18px;
     line-height: 31px;
     color: #E0E0E0;
 }
 
-.content .content-box section .balance-box .money-balance span {
+.content .content-box section .box .balance-box .money-balance span {
     font-weight: bold;
     font-size: 40px;
     line-height: 55px;
     color: #FFFFFF;
 }
 
-.content .content-box section .balance-box .transfer-topup {
+.content .content-box section .box .balance-box .transfer-topup {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -240,7 +268,7 @@ nav ul li p .link:hover {
     justify-content: center;
 }
 
-.content .content-box section .balance-box .transfer-topup div {
+.content .content-box section .box .balance-box .transfer-topup div {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -254,12 +282,12 @@ nav ul li p .link:hover {
     cursor: pointer;
 }
 
-.content .content-box section .balance-box .transfer-topup div img {
+.content .content-box section .box .balance-box .transfer-topup div img {
     width: 28px;
     height: 28px;
 }
 
-.content .content-box section .balance-box .transfer-topup div p {
+.content .content-box section .box .balance-box .transfer-topup div p {
     font-weight: bold;
     font-size: 18px;
     line-height: 25px;
@@ -267,15 +295,15 @@ nav ul li p .link:hover {
     margin-left: 5%;
 }
 
-.content .content-box section .two-content {
+.content .content-box section .box .two-content {
     display: flex;
     flex-direction: row !important;
     width: 100%;
-    height: 72%;
+    height: 75%;
     margin-top: 3%;
 }
 
-.content .content-box section .two-content .chart {
+.content .content-box section .box .two-content .chart {
     display: flex;
     flex-direction: column;
     width: 55%;
@@ -287,30 +315,30 @@ nav ul li p .link:hover {
     align-items: center;
 }
 
-.content .content-box section .two-content .chart .income-expense {
+.content .content-box section .box .two-content .chart .income-expense {
     display: flex;
     width: 90%;
     height: 25%;
 }
 
-.content .content-box section .two-content .chart .income-expense .income {
+.content .content-box section .box .two-content .chart .income-expense .income {
     width: 70%;
     height: 100%;
 }
 
-.content .content-box section .two-content .chart .income-expense .income img {
+.content .content-box section .box .two-content .chart .income-expense .income img {
     width: 28px;
     height: 28px;
 }
 
-.content .content-box section .two-content .chart .income-expense .income p {
+.content .content-box section .box .two-content .chart .income-expense .income p {
     font-weight: normal;
     font-size: 14px;
     line-height: 19px;
     color: #6A6A6A;
 }
 
-.content .content-box section .two-content .chart .income-expense .income span {
+.content .content-box section .box .two-content .chart .income-expense .income span {
     font-weight: bold;
     font-size: 18px;
     line-height: 25px;
@@ -318,31 +346,31 @@ nav ul li p .link:hover {
 }
 
 /*  */
-.content .content-box section .two-content .chart .income-expense .expense {
+.content .content-box section .box .two-content .chart .income-expense .expense {
     width: 30%;
     height: 100%;
 }
 
-.content .content-box section .two-content .chart .income-expense .expense img {
+.content .content-box section .box .two-content .chart .income-expense .expense img {
     width: 28px;
     height: 28px;
 }
 
-.content .content-box section .two-content .chart .income-expense .expense p {
+.content .content-box section .box .two-content .chart .income-expense .expense p {
     font-weight: normal;
     font-size: 14px;
     line-height: 19px;
     color: #6A6A6A;
 }
 
-.content .content-box section .two-content .chart .income-expense .expense span {
+.content .content-box section .box .two-content .chart .income-expense .expense span {
     font-weight: bold;
     font-size: 18px;
     line-height: 25px;
     color: #3A3D42;
 }
 
-.content .content-box section .two-content .chart .graph {
+.content .content-box section .box .two-content .chart .graph {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -351,12 +379,12 @@ nav ul li p .link:hover {
     margin-top: 5%;
 }
 
-.content .content-box section .two-content .chart .graph img {
+.content .content-box section .box .two-content .chart .graph img {
     width: 341px;
     height: 268px;
 }
 
-.content .content-box section .two-content .transaction-history {
+.content .content-box section .box .two-content .transaction-history {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -368,28 +396,28 @@ nav ul li p .link:hover {
     margin-left: auto;
 }
 
-.content .content-box section .two-content .transaction-history .box {
+.content .content-box section .box .two-content .transaction-history .box-transaction {
     display: flex;
     flex-direction: column;
     width: 90%;
     height: 100%;
 }
 
-.content .content-box section .two-content .transaction-history .box .transaction-history-title {
+.content .content-box section .box .two-content .transaction-history .box-transaction .transaction-history-title {
     display: flex;
     width: 100%;
     align-items: center;
     margin-top: 3%;
 }
 
-.content .content-box section .two-content .transaction-history .box .transaction-history-title span {
+.content .content-box section .box .two-content .transaction-history .box-transaction .transaction-history-title span {
     font-weight: bold;
     font-size: 18px;
     line-height: 25px;
     color: #3A3D42;
 }
 
-.content .content-box section .two-content .transaction-history .box .transaction-history-title p {
+.content .content-box section .box .two-content .transaction-history .box-transaction .transaction-history-title p {
     font-weight: 600;
     font-size: 14px;
     line-height: 19px;
@@ -399,55 +427,55 @@ nav ul li p .link:hover {
     cursor: pointer;
 }
 
-.content .content-box section .two-content .transaction-history .box p {
+.content .content-box section .box .two-content .transaction-history .box-transaction p {
     font-size: 16px;
     font-weight: normal;
     color: #7A7886;
     margin-top: 5%;
 }
 
-.content .content-box section .two-content .transaction-history .box p.month {
+.content .content-box section .box .two-content .transaction-history .box-transaction p.month {
     margin-top: 13%;
 }
 
-.content .content-box section .two-content .transaction-history .box .transaction {
+.content .content-box section .box .two-content .transaction-history .box-transaction .transaction {
     display: flex;
     align-items: center;
     margin-top: 5%;
 }
 
-.content .content-box section .two-content .transaction-history .box .transaction img {
+.content .content-box section .box .two-content .transaction-history .box-transaction .transaction img {
     width: 56px;
     height: 56px;
 }
 
-.content .content-box section .two-content .transaction-history .box .transaction .status {
+.content .content-box section .box .two-content .transaction-history .box-transaction .transaction .status {
     display: flex;
     flex-direction: column;
     margin-left: 3%;
 }
 
-.content .content-box section .two-content .transaction-history .box .status .name {
+.content .content-box section .box .two-content .transaction-history .box-transaction .status .name {
     color: #4D4B57;
     font-size: 16px;
     font-weight: bold;
 }
 
-.content .content-box section .two-content .transaction-history .box .status p {
+.content .content-box section .box .two-content .transaction-history .box-transaction .status p {
     color: #7A7886;
     font-size: 14px;
     font-weight: normal;
     margin-bottom: 0;
 }
 
-.content .content-box section .two-content .transaction-history .box .money-one {
+.content .content-box section .box .two-content .transaction-history .box-transaction .money-one {
     color: #1EC15F;
     font-size: 16px;
     font-weight: bold;
     margin-left: auto;
 }
 
-.content .content-box section .two-content .transaction-history .box .money-two {
+.content .content-box section .box .two-content .transaction-history .box-transaction .money-two {
     color: #FF5B37;
     ;
     font-size: 16px;
@@ -455,83 +483,85 @@ nav ul li p .link:hover {
     margin-left: auto;
 }
 
-/* @media only screen and (max-width: 576px) {
+@media only screen and (max-width: 576px) {
     .content {
         display: flex;
         width: 100%;
         height: max-content;
+        margin-top: 15px;
     }
 
-    .content .content-box {
+    .content .content-box{
         display: flex;
         flex-direction: column;
         width: 100%;
         height: max-content;
     }
 
-    .content .content-box nav {
-        display: none;
+    .content .content-box nav{
+        display: flex;
         flex-direction: row;
+        justify-content: center;
+        align-items: center;
         width: 100%;
-        height: max-content;
+        height: 60px;
+        border-radius: 15px;
     }
 
-    nav ul {
-    list-style: none;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid black;
+    .content .content-box nav ul{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      width: 100%;
     }
 
-nav ul li{
-    list-style: none;
-    display: flex;
-}
+    .content .content-box nav ul li{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      width: 100%;
+    }
 
-nav ul li img{
-    width: 28px;
-    height: 28px;
-}
+    .content .content-box nav ul li p{
+      display: none;
+    }
 
-nav ul li p{
-    margin-left: 8%;
-    display: none;
-}
+    .content .content-box section{
+        width: 100%;
+        margin-top: 10px;
+    }
 
-nav ul li p .link:hover {
-    color: rgb(99, 121, 244, 1);
-}
-}
+    .content .content-box section .box{
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
 
-.content .content-box section {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: max-content + 10px;
-    margin-top: 10px;
-}
+    .content .content-box section .box .balance-box .transfer-topup div {
+      width: 130px;
+      height: 50px;
+    }
 
-.content .content-box section .two-content {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: calc(max-content + 100px);
-}
+    .content .content-box section .box .two-content {
+      display: flex;
+      flex-direction: column !important;
+      width: 100%;
+    }
 
-.content .content-box section .two-content .chart{
-    display: flex;
-    width: 100%;
-    height: max-content;
-}
+    .content .content-box section .box .two-content .chart{
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
 
-.content .content-box section .two-content .transaction-history{
-    display: flex;
-    width: 100%;
-    height: calc(max-content + 10px);
-    margin-top: 10px;
-} */
+    .content .content-box section .box .two-content .transaction-history{
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin-top: 10px;
+    }
+}
 </style>

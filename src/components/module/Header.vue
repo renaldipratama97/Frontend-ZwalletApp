@@ -7,7 +7,8 @@
                 <img @click.prevent="changePage()" v-if="userLogin.picture" :src="userLogin.picture">
                 <img @click.prevent="changePage()" v-else src="../../assets/default.jpg">
                 <div class="name">
-                    <span> {{userLogin.username}} </span>
+                    <span v-if="userLogin.firstname"> {{userLogin.firstname}} </span>
+                    <span v-else> Unknown Name </span>
                     <p v-if="userLogin.phonenumber"> {{userLogin.phonenumber}} </p>
                     <p v-else> +62 - </p>
                 </div>
@@ -128,8 +129,16 @@ header .box .profil .notification img {
         height: 100%;
     }
 
+    header .box .title {
+        margin-left: 5%;
+    }
+
     header .box .profil {
         margin-left: 0;
+    }
+
+    header .box .profil {
+        margin-left: 5%;
     }
 }
 </style>

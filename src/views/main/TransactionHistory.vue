@@ -7,11 +7,11 @@
             <nav>
             <!-- <div class="box"> -->
                 <ul>
-                    <li><img src="../../assets/img/grid.png"><p><router-link class="link" to="/">Dashboard</router-link></p></li>
-                    <li><img src="../../assets/img/arrow-up.png"><p><router-link class="link" to="/transfer">Transfer</router-link></p></li>
-                    <li><img src="../../assets/img/plus.png"><p><router-link class="link" to="/topup">Topup</router-link></p></li>
-                    <li><img src="../../assets/img/user.png"><p><router-link class="link" to="/profil">Profil</router-link></p></li>
-                    <li><img src="../../assets/img/log-out.png"><p><router-link class="link" to="/">Logout</router-link></p></li>
+                    <li><img @click.prevent="goHome" src="../../assets/img/grid.png"><p><router-link class="link" to="/">Dashboard</router-link></p></li>
+                    <li><img @click.prevent="goTransfer" src="../../assets/img/arrow-up.png"><p><router-link class="link" to="/transfer">Transfer</router-link></p></li>
+                    <li><img @click.prevent="goTopUp" src="../../assets/img/plus.png"><p><router-link class="link" to="/topup">Topup</router-link></p></li>
+                    <li><img @click.prevent="goProfile" src="../../assets/img/user.png"><p><router-link class="link" to="/profil">Profil</router-link></p></li>
+                    <li><img @click.prevent="goLogout" src="../../assets/img/log-out.png"><p><router-link class="link" to="/">Logout</router-link></p></li>
                 </ul>
             <!-- </div> -->
             </nav>
@@ -64,6 +64,21 @@ export default {
   },
   methods: {
     ...mapActions(['getUserLogin', 'getTransactionLogin']),
+    goHome () {
+      this.$router.push('/')
+    },
+    goTransfer () {
+      this.$router.push('/transfer')
+    },
+    goTopUp () {
+      this.$router.push('/topup')
+    },
+    goProfile () {
+      this.$router.push('/profil')
+    },
+    goLogout () {
+      this.$router.push('/')
+    },
     goDetailTransfer (idTransfer) {
       this.$router.push({ name: 'DetailTransaction', params: { idTransfer } })
     }
@@ -246,21 +261,50 @@ nav ul li p .link:hover {
         display: flex;
         width: 100%;
         height: max-content;
+        margin-top: 15px;
     }
 
     .content .content-box{
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: max-content;
+        height: 600px;
     }
 
     .content .content-box nav{
-        display: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 60px;
+        border-radius: 15px;
+    }
+
+    .content .content-box nav ul{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      width: 100%;
+    }
+
+    .content .content-box nav ul li{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      width: 100%;
+    }
+
+    .content .content-box nav ul li p{
+      display: none;
     }
 
     .content .content-box section{
         width: 100%;
+        margin-top: 10px;
     }
 }
 </style>

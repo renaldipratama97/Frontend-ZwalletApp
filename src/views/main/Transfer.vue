@@ -4,15 +4,13 @@
         <div class="content">
           <div class="content-box">
             <nav>
-            <!-- <div class="box"> -->
                 <ul>
-                    <li><img src="../../assets/img/grid.png"><p><router-link class="link" to="/">Dashboard</router-link></p></li>
-                    <li><img src="../../assets/img/arrow-up.png"><p><router-link class="link" to="/transfer">Transfer</router-link></p></li>
-                    <li><img src="../../assets/img/plus.png"><p><router-link class="link" to="/topup">Topup</router-link></p></li>
-                    <li><img src="../../assets/img/user.png"><p><router-link class="link" to="/profil">Profil</router-link></p></li>
-                    <li><img src="../../assets/img/log-out.png"><p><router-link class="link" to="/">Logout</router-link></p></li>
+                    <li><img @click.prevent="goHome" src="../../assets/img/grid.png"><p><router-link class="link" to="/">Dashboard</router-link></p></li>
+                    <li><img @click.prevent="goTransfer" src="../../assets/img/arrow-up.png"><p><router-link class="link" to="/transfer">Transfer</router-link></p></li>
+                    <li><img @click.prevent="goTopUp" src="../../assets/img/plus.png"><p><router-link class="link" to="/topup">Topup</router-link></p></li>
+                    <li><img @click.prevent="goProfile" src="../../assets/img/user.png"><p><router-link class="link" to="/profil">Profil</router-link></p></li>
+                    <li><img @click.prevent="goLogout" src="../../assets/img/log-out.png"><p><router-link class="link" to="/">Logout</router-link></p></li>
                 </ul>
-            <!-- </div> -->
             </nav>
             <section>
                 <div class="box">
@@ -37,6 +35,15 @@
                             <p v-else> - </p>
                         </div>
                         </router-link>
+                    </div>
+                    <div class="pagination">
+                      <div class="button-pagination">
+                        <button v-if="pagination.prevPage" @click.prevent="previousPagination">&laquo;</button>
+                        <button v-else class="disabled-page">&laquo;</button>
+                        <button>{{pagination.currentPage}}</button>
+                        <button v-if="pagination.nextPage" @click.prevent="nextPagination">&raquo;</button>
+                        <button v-else class="disabled-page">&raquo;</button>
+                      </div>
                     </div>
                 </div>
             </section>
@@ -70,7 +77,22 @@ export default {
     this.sortUser('ASC')
   },
   methods: {
-    ...mapActions(['searchUser', 'sortUser']),
+    ...mapActions(['searchUser', 'sortUser', 'paginationUsers']),
+    goHome () {
+      this.$router.push('/')
+    },
+    goTransfer () {
+      this.$router.push('/transfer')
+    },
+    goTopUp () {
+      this.$router.push('/topup')
+    },
+    goProfile () {
+      this.$router.push('/profil')
+    },
+    goLogout () {
+      this.$router.push('/')
+    },
     searchReceiver (e) {
       this.searchUser(e.target.value)
     },
@@ -79,10 +101,22 @@ export default {
     },
     descSort () {
       this.sortUser('DESC')
+    },
+    previousPagination () {
+      const payload = {
+        page: parseInt(this.pagination.currentPage) - 1
+      }
+      this.paginationUsers(payload)
+    },
+    nextPagination () {
+      const payload = {
+        page: parseInt(this.pagination.currentPage) + 1
+      }
+      this.paginationUsers(payload)
     }
   },
   computed: {
-    ...mapGetters(['resultSearch'])
+    ...mapGetters(['resultSearch', 'pagination'])
   }
 }
 </script>
@@ -293,26 +327,114 @@ nav ul li p .link:hover {
     margin-bottom: auto;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+  margin-top: 20px;
+}
+
+.pagination .button-pagination {
+  display: flex;
+  width: max-content;
+  height: max-content;
+}
+
+.pagination .button-pagination button {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  background: #6379F4;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.pagination .button-pagination button:nth-child(2) {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  background: #f6f7ff;
+  border: none;
+  color: #6379F4;
+  cursor: not-allowed;
+}
+
+.pagination .button-pagination button:focus {
+  outline: none;
+}
+
+.pagination .button-pagination button.disabled-page {
+  background: #797979;
+  cursor: not-allowed;
+}
+
 @media only screen and (max-width: 576px) {
     .content {
         display: flex;
         width: 100%;
         height: max-content;
+        margin-top: 15px;
     }
 
     .content .content-box{
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: max-content;
+        height: 900px;
     }
 
     .content .content-box nav{
-        display: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 60px;
+        border-radius: 15px;
+    }
+
+    .content .content-box nav ul{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      width: 100%;
+    }
+
+    .content .content-box nav ul li{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      width: 100%;
+    }
+
+    .content .content-box nav ul li p{
+      display: none;
     }
 
     .content .content-box section{
         width: 100%;
+        margin-top: 10px;
     }
+
+    .box .title-sort .sort button{
+  width: 25%;
+  height: 30px;
+  background: #6379F4;
+  box-shadow: 0px 6px 75px rgba(100, 87, 87, 0.05);
+  border-radius: 5px;
+  border: none;
+  color: #FFFFFF;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 25px;
+  cursor: pointer;
+}
 }
 </style>

@@ -16,7 +16,7 @@
                 <div class="word-bold">Start Accessing Banking Needs With All Devices and All Platforms With 30.000+ Users</div>
                 <div class="word-small">Transfering money is eassier than ever, you can access Zwallet wherever you are. Desktop, laptop, mobile phone? we cover all of that for you!</div>
                 <div class="login">Login</div>
-                <form @submit.prevent="methodLogin">
+                <form>
                 <div class="input-box">
                     <div class="input">
                         <img src="../../../assets/img/mail.svg">
@@ -39,7 +39,7 @@
                 <div class="forgot-password">
                     <p>Forgot password?</p>
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit" @click.prevent="methodLogin">Login</button>
                 </form>
 
                 <span>Don’t have an account? Let’s <router-link class="link" to="/auth/register">Sign Up</router-link></span>

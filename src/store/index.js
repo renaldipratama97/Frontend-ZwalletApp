@@ -16,7 +16,8 @@ export default new Vuex.Store({
     phone: {},
     toTransfer: {},
     transactions: {},
-    detailTransaction: {}
+    detailTransaction: {},
+    pagination: {}
   },
   mutations: {
     SET_USER (state, payload) {
@@ -68,18 +69,41 @@ export default new Vuex.Store({
     SET_SORT_USERNAME (state, payload) {
       state.search = payload
     },
+    SET_USER_PAGINATION (state, payload) {
+      state.search = payload
+    },
     SET_TRANSACTION (state, payload) {
       state.transactions = payload
+    },
+    SET_PAGINATION (state, payload) {
+      state.pagination = payload
     }
   },
   actions: {
+    paginationUsers (context, payload) {
+      return new Promise((resolve, reject) => {
+        axios.get(`${process.env.VUE_APP_BASE_URL}/users?page=${payload.page}`)
+          .then((res) => {
+            const result = res.data.result.users
+            const pagination = res.data.result.pagination
+            context.commit('SET_USER_PAGINATION', result)
+            context.commit('SET_PAGINATION', pagination)
+            resolve(result)
+          })
+          .catch((err) => {
+            console.log(err)
+            reject(err)
+          })
+      })
+    },
     sortUser (context, payload) {
       return new Promise((resolve, reject) => {
         axios.get(`${process.env.VUE_APP_BASE_URL}/users?order=${payload}`)
           .then((res) => {
-            console.log(res)
             const result = res.data.result.users
+            const pagination = res.data.result.pagination
             context.commit('SET_SORT_USERNAME', result)
+            context.commit('SET_PAGINATION', pagination)
             resolve(result)
           })
           .catch((err) => {
@@ -92,9 +116,10 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios.get(`${process.env.VUE_APP_BASE_URL}/users?username=${payload}`)
           .then((res) => {
-            console.log(res)
             const result = res.data.result.users
+            const pagination = res.data.result.pagination
             context.commit('SET_SEARCH_USERNAME', result)
+            context.commit('SET_PAGINATION', pagination)
             resolve(result)
           })
           .catch((err) => {
@@ -257,30 +282,28 @@ export default new Vuex.Store({
           })
       })
     },
-    updatePicture (context, payload) {
+    updatePicture ({ dispatch }, payload) {
       return new Promise((resolve, reject) => {
-        const formData = new FormData()
-        formData.append('picture', payload.image)
-        axios.patch(`${process.env.VUE_APP_BASE_URL}/users/updatepicture/${payload.id}`, formData)
-          .then((res) => {
-            console.log(payload.image.name)
-            context.commit('SET_PICTURE', URL.createObjectURL(payload.image))
+        axios.patch(`${process.env.VUE_APP_BASE_URL}/users/updatepicture/${payload.get('id')}`, payload)
+          .then(res => {
+            console.log(payload)
             Swal.fire({
               icon: 'success',
-              title: 'Update picture Success',
+              title: 'Your picture has been updated',
               showConfirmButton: false,
               timer: 1500
             })
-            this.router.push('/profil')
-            resolve(res)
+
+            dispatch('getUserLogin')
           })
-          .catch((err) => {
+          .catch(err => {
             Swal.fire({
               icon: 'error',
-              title: 'Update picture failed',
+              title: 'Failed to update picture',
               showConfirmButton: false,
               timer: 1500
             })
+            console.log(err.response)
             reject(err)
           })
       })
@@ -356,6 +379,9 @@ export default new Vuex.Store({
     },
     detailTransaction (state) {
       return state.detailTransaction
+    },
+    pagination (state) {
+      return state.pagination
     }
   },
   modules: {
