@@ -109,11 +109,15 @@ body {
     box-sizing: border-box;
 }
 
+.is-invalid {
+  border-top: 0.5px solid red;
+}
+
 .invalid-feedback {
   width: 85%;
   color: red;
   font-size: 10px;
-  border-top: 0.5px solid red;
+  /* border-top: 0.5px solid red; */
 }
 
 .container {
