@@ -30,7 +30,7 @@
                         <img v-else src="../../assets/default.jpg">
                         <router-link class="link" :to="{ path: `/input-transfer/${data.id}` }">
                         <div class="box-profile">
-                            <span>{{data.username}}</span>
+                            <span>{{data.firstname}} {{data.lastname}}</span>
                             <p v-if="data.phonenumber"> {{data.phonenumber}} </p>
                             <p v-else> - </p>
                         </div>

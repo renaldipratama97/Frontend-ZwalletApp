@@ -29,7 +29,7 @@
 
                 <div class="white-box">
                   <div class="title">Date & Time</div>
-                  <div class="data">{{detailTransaction.date_time}}</div>
+                  <div class="data">{{formatDate(detailTransaction.date_time)}}</div>
                 </div>
 
                 <div class="white-box">
@@ -67,6 +67,8 @@ import Header from '../../components/module/Header'
 import Footer from '../../components/module/Footer'
 import { mapGetters, mapActions } from 'vuex'
 import JsPDF from 'jspdf'
+import moment from 'moment'
+moment.locale('id')
 // import Swal from 'sweetalert2'
 export default {
   name: 'DetailTransaction',
@@ -118,6 +120,9 @@ export default {
 
       doc.text('ZwalletApp', 10, 10)
       doc.save('ZwalletApp.pdf')
+    },
+    formatDate (date) {
+      return moment(date).format('LL')
     }
   },
   computed: {
