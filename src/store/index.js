@@ -7,6 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    password: '',
     user: {},
     id: null || localStorage.getItem('id'),
     accessToken: null || localStorage.getItem('accessToken'),
